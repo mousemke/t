@@ -1,0 +1,30 @@
+{
+  "LANGUAGE": "The current language is {{lang}}",
+  "BASICS": {
+    "PARTNER_MODEL": "Article"
+  },
+  "BRAND": "Brand X",
+  "BRAND_pierone": "Pier One",
+  "COLORED_HOUSES": "{{count}} {{color}} house",
+  "COLORED_HOUSES_plural": "{{count}} {{color}} houses",
+  "COMPLEX_HOUSES_AND_HOTELS":
+    "They have $t(COLORED_HOUSES, {\"count\": {{houses}}, \"color\": \"{{color}}\"}) and $t(HOTELS, {\"count\": {{hotels}} })",
+  "COMPOUND": "$t(BASICS.{{unit}}) from $t(BRAND)",
+  "CTA": "Dont forget to {{cta, uppercase}}",
+  "DOWNLOADS": {
+    "GENERATE_BUTTON": "Generate report"
+  },
+  "FULL_NAME": "My name is {{name.first}} {{name.last}}",
+  "GENERATE_BUTTON": "Generate report for $t(BRAND)",
+  "HOUSES_AND_HOTELS":
+    "They have $t(HOUSES, {\"count\": {{houses}} }) and $t(HOTELS, {\"count\": {{hotels}} })",
+  "HOTELS": "{{count}} hotel",
+  "HOTELS_plural": "{{count}} hotels",
+  "HOUSES": "{{count}} house",
+  "HOUSES_plural": "{{count}} houses",
+  "NAME": "My name is {{name}}",
+  "REPORTS_LOADING_TEXT": "{{count}} report is being generated...",
+  "REPORTS_LOADING_TEXT_plural": "{{count}} reports are being generated...",
+  "VAGUE_REPORTS_LOADING_TEXT": "A report is being generated...",
+  "VAGUE_REPORTS_LOADING_TEXT_plural": "Some reports are being generated..."
+}
