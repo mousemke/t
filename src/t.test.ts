@@ -1,4 +1,4 @@
-import T, { Translator } from "./";
+import T, { Translator } from ".";
 import exampleTranslations from "./example-app.en.json";
 
 let t: Translator;
@@ -13,12 +13,11 @@ const exampleProps = {
 
     return value;
   },
-  lang: "en",
-  onLanguageChange: () => {}
+  lang: "en"
 };
 
 describe("t", () => {
-  beforeAll(done => {
+  beforeAll((done) => {
     t = new T({
       ...exampleProps,
       onLanguageChange: () => done()
@@ -29,13 +28,12 @@ describe("t", () => {
 
   describe("t", () => {
     it("should not crash if used before translations are retrieved", () => {
-      const t = new T({
+      const emptyT = new T({
         ...exampleProps,
-        fetchTranslations: () => {},
-        onLanguageChange: () => {}
+        fetchTranslations: () => ({})
       });
 
-      expect(() => t("DOWNLOADS.GENERATE_BUTTON")).not.toThrow();
+      expect(() => emptyT("DOWNLOADS.GENERATE_BUTTON")).not.toThrow();
     });
 
     it("should process a normal key - t('BRAND')", () => {
@@ -182,17 +180,16 @@ describe("t", () => {
   });
 
   describe("t.setLanguage", () => {
-    it("should change the internal language and retrieve new translations", done => {
+    it("should change the internal language and retrieve new translations", (done) => {
       const fetchTranslationsSpy = jest.fn();
 
-      const t = new T({
+      const changingT = new T({
         ...exampleProps,
-        fetchTranslations: fetchTranslationsSpy,
-        onLanguageChange: () => {}
+        fetchTranslations: fetchTranslationsSpy
       });
 
-      t.setLanguage("fr").then(() => {
-        expect(t.getLanguage()).toBe("fr");
+      changingT.setLanguage("fr").then(() => {
+        expect(changingT.getLanguage()).toBe("fr");
         expect(fetchTranslationsSpy).toBeCalledTimes(2);
 
         done();
@@ -201,13 +198,13 @@ describe("t", () => {
   });
 
   describe("t.getTranslations", () => {
-    it("should fire a console.warning if fired outside of test mode", () => {
+    it("should fire a console.error if fired outside of test mode", () => {
       const consoleSpy = jest
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation(() => null);
 
       t.setTest(false);
-      expect(t.getTranslations()).toBeUndefined();
+      expect(t.getTranslations()).toBe(null);
 
       expect(consoleSpy.mock.calls[0][0]);
     });

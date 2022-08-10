@@ -85,7 +85,7 @@ export interface Translate {
   /**
    * The app name passed into the constructor
    */
-  onLanguageChange: OnLanguageChange;
+  onLanguageChange?: OnLanguageChange;
 
   /**
    * Translations recieved from fetchTranslations. This is the main
@@ -142,13 +142,13 @@ export interface TranslationContructorProps {
    * the traditional place to fire an event or state change that will trigger
    * test re-renders in your app
    */
-  onLanguageChange: OnLanguageChange;
+  onLanguageChange?: OnLanguageChange;
 
   /**
    * The actual function that does the fetching of the translations. For
    * maximum flexibility this is abstracted out to the user.
    */
-  fetchTranslations?: FetchTranslationFunction;
+  fetchTranslations: FetchTranslationFunction;
 
   /**
    * The formatter passed into the constructor. This recieves the second param
@@ -160,11 +160,15 @@ export interface TranslationContructorProps {
 /**
  * The main `T` constructor. This should always be used with "new".
  * It will not work without new.
+ *
  */
+/* eslint-disable no-shadow */
+// we disable a lint rule since we need to declare the same name in this example
 export interface TranslationConstructor<T> {
   (TranslationContructorProps): T;
   new (TranslationContructorProps): T;
 }
+/* eslint-enable */
 
 /**
  * The return of the constructor. The main translation function with the support methods attached to it.

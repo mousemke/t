@@ -1,66 +1,118 @@
 /* eslint-disable import/unambiguous */
 /* eslint-disable import/no-commonjs */
+
 module.exports = {
-  parser: "@typescript-eslint/parser",
+  env: {
+    browser: true,
+    es2021: true
+  },
   extends: [
+    "airbnb-base",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/typescript"
+    "plugin:prettier/recommended"
   ],
+  overrides: [
+    {
+      files: ["*.spec.ts"],
+      globals: {
+        /**
+         * These globals are all used by Jest and as such are restricted to test files
+         */
+        afterEach: "readonly",
+        describe: "readonly",
+        beforeEach: "readonly",
+        expect: "readonly",
+        it: "readonly",
+        jest: "readonly"
+      }
+    },
+    {
+      files: ["*.types.ts"],
+      rules: {
+        "no-use-before-define": "off",
+        "no-unused-vars": "off"
+      }
+    }
+  ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: "latest",
     sourceType: "module"
   },
-  plugins: ["import"],
+  plugins: ["@typescript-eslint", "prettier"],
   rules: {
-    "import/no-unresolved": "error",
-    "import/named": "error",
-    "import/namespace": "error",
-    "import/no-restricted-paths": "error",
-    "import/no-absolute-path": "error",
-    "import/no-dynamic-require": "error",
-    "import/no-webpack-loader-syntax": "error",
-    "import/export": "error",
-    "import/no-named-as-default": "error",
-    "import/no-named-as-default-member": "error",
-    "import/no-deprecated": "warn",
-    "import/no-extraneous-dependencies": "error",
-    "import/no-mutable-exports": "error",
-    "import/unambiguous": "error",
-    "import/no-commonjs": "error",
-    "import/no-amd": "error",
-    "import/first": "error",
-    "import/no-duplicates": "error",
-    "import/no-namespace": "error",
-    "import/newline-after-import": "error",
-    "import/no-unassigned-import": "off",
-    "import/no-named-default": "error",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": [
+    /**
+     * JavaScript allows the omission of curly braces when a block contains
+     * only one statement. However, it is considered by many to be best
+     * practice to never omit curly braces around blocks, even when they
+     * are optional, because it can lead to bugs and reduces code clarity.
+     */
+    curly: ["error", "all"],
+    /**
+     * Since we have node-resolve installed we do not need extensions listed.
+     */
+    "import/extensions": [
       "error",
-      { ignoreRestSiblings: true }
+      "ignorePackages",
+      {
+        js: "never",
+        ts: "never"
+      }
     ],
-    "@typescript-eslint/ban-ts-comment": [
+    /**
+     * This slightly alters the allowed order of imports to allow us to put types clearly at the bottom.
+     */
+    "import/order": [
       "error",
       {
-        "ts-expect-error": "allow-with-description",
-        minimumDescriptionLength: 10
+        groups: [
+          "index",
+          "sibling",
+          "parent",
+          "internal",
+          "external",
+          "builtin",
+          "object",
+          "type"
+        ]
+      }
+    ],
+    /**
+     * We allow console errors to be used for the sake of information
+     */
+    "no-console": [
+      "error",
+      {
+        allow: ["error"]
+      }
+    ],
+    /**
+     * This rule is disabled in functions since there is no problem using a
+     * variable in a function before it is defined at the root. In that case
+     * it is still defined before use and allows us to keep everything in
+     * alphabetical order. In the case that the variable truly does not exist,
+     * Typescript should let us know…
+     *
+     * example:
+     *    const getCoordinates = (x) => retrieveCoorsJson()[x];
+     *    const retrieveCoorsJson = () => fetch();
+     */
+    "no-use-before-define": [
+      "error",
+      {
+        functions: false
       }
     ]
   },
   settings: {
-    "import/core-modules": ["puppeteer"],
-    overrides: [
-      {
-        files: ["*.test.ts", "*.test.tsx"],
-        rules: {
-          "import/no-namespace": "off"
-        }
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts"]
+    },
+    "import/resolver": {
+      typescript: {
+        alwaysTryTypes: true
       }
-    ]
+    }
   }
 };
-/* eslint-enable */

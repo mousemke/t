@@ -1,7 +1,7 @@
 import pkg from "./package.json";
 
-import typescript from '@rollup/plugin-typescript';
-import dts from 'rollup-plugin-dts';
+import typescript from "@rollup/plugin-typescript";
+import dts from "rollup-plugin-dts";
 import tsOptions from "./tsconfig.json";
 
 const external = ["typescript", "rollup"];

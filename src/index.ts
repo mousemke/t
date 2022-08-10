@@ -1,3 +1,4 @@
-export { T as default } from "./t";
+import T from "./t";
 
+export default T;
 export * from "./t.types";

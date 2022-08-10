@@ -15,11 +15,11 @@ import type {
 const variableRegex = /(?:{{(.+?)}})/g;
 const recursiveRegex = /(?:\$t\((.+?)\))/g;
 
-export const T = function T(props: TranslationContructorProps): Translator {
+const T = function T(props: TranslationContructorProps): Translator {
   const { appName, lang, onLanguageChange, formatter, fetchTranslations } =
     props;
 
-  /**.
+  /** .
    * Main translation function. Also defers to test when applicable.
    *
    * @param rawKey string
@@ -68,7 +68,7 @@ export const T = function T(props: TranslationContructorProps): Translator {
      * return thge defaultValue on error (if available), or the key
      */
     let variableError = false;
-    (translation.match(variableRegex) || []).forEach(match => {
+    (translation.match(variableRegex) || []).forEach((match) => {
       const [variableString, format] = match.slice(2, -2).split(", ");
 
       const variable = variableString
@@ -92,12 +92,12 @@ export const T = function T(props: TranslationContructorProps): Translator {
       return defaultValue || key;
     }
 
-    (translation.match(recursiveRegex) || []).forEach(match => {
+    (translation.match(recursiveRegex) || []).forEach((match) => {
       const args = match.slice(3, -1).split(", ");
       const opt = args[1] ? JSON.parse(args.slice(1).join(", ")) : undefined;
 
-      const key = translate(args[0], opt);
-      translation = (translation as string).replace(match, key);
+      const translationKey = translate(args[0], opt);
+      translation = (translation as string).replace(match, translationKey);
     });
 
     return translation;
@@ -120,9 +120,11 @@ export const T = function T(props: TranslationContructorProps): Translator {
     }
 
     console.error("[ERR] getTranslations only works when test mode is enabled");
+
+    return null;
   };
 
-  /**.
+  /** .
    * Handles setup of the variables and the retrieves initial translations
    *
    * @param appName string
@@ -131,32 +133,32 @@ export const T = function T(props: TranslationContructorProps): Translator {
    * @param formatter
    */
   this.init = (
-    appName: AppName,
-    lang: Lang,
-    onLanguageChange: OnLanguageChange,
-    formatter: Formatter
+    app: AppName,
+    language: Lang,
+    formatterFunction: Formatter,
+    onLanguageChangeFunction?: OnLanguageChange
   ) => {
-    this.appName = appName;
-    this.lang = lang;
-    this.onLanguageChange = onLanguageChange;
-    this.formatter = formatter;
+    this.appName = app;
+    this.lang = language;
+    this.formatter = formatterFunction;
+    this.onLanguageChange = onLanguageChangeFunction;
 
     return this.setTranslations(lang);
   };
 
-  /**.
-   * Sets the language internally, grabs the translations from s3,
+  /** .
+   * Sets the language internally, grabs the translations,
    * then fires the onLanguageChange
    *
    * @param lang
    */
-  this.setLanguage = (lang: Lang): Promise<TranslationObject> => {
-    this.lang = lang;
+  this.setLanguage = (newLanguage: Lang): Promise<TranslationObject> => {
+    this.lang = newLanguage;
 
-    return this.setTranslations(lang);
+    return this.setTranslations(newLanguage);
   };
 
-  /**.
+  /** .
    * Enables or disables test mode
    *
    * @param test boolean
@@ -165,29 +167,30 @@ export const T = function T(props: TranslationContructorProps): Translator {
     this.testEnabled = test;
   };
 
-  /**.
+  /** .
    * Grabs the translations from s3
    *
    * @param lang
    * @returns Promise<translations>
    */
-  this.setTranslations = (lang: string): Promise<TranslationObject> => {
-    const setTranslation = (translations: TranslationObject) =>
-      (this.translations = translations);
+  this.setTranslations = (newLanguage: string): Promise<TranslationObject> => {
+    const setTranslation = (translations: TranslationObject) => {
+      this.translations = translations;
+    };
 
-    return new Promise<TranslationObject>(resolve => {
+    return new Promise<TranslationObject>((resolve) => {
       resolve(
         fetchTranslations({
           appName,
-          lang
+          lang: newLanguage
         })
       );
     })
       .then((res: TranslationObject) => setTranslation(res))
-      .then(() => this.onLanguageChange(lang));
+      .then(() => this.onLanguageChange?.(newLanguage));
   };
 
-  this.init(appName, lang, onLanguageChange, formatter);
+  this.init(appName, lang, formatter, onLanguageChange);
 
   return Object.assign(translate, {
     getLanguage: this.getLanguage,
@@ -196,3 +199,5 @@ export const T = function T(props: TranslationContructorProps): Translator {
     setTest: this.setTest
   } as Translate);
 } as TranslationConstructor<Translator>;
+
+export default T;
