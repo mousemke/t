@@ -1,4 +1,4 @@
-# t
+# translationary
 
 A utility to parse strings and retrieve translations
 
@@ -15,7 +15,7 @@ A utility to parse strings and retrieve translations
 To install, use npm. For the procuction code, there are no dependencies.
 
 ```bash
-npm install t
+npm install translationary
 ```
 
 ## Initialization
@@ -23,8 +23,8 @@ npm install t
 To add it to your project, first import the default T. `.js`, `.cjs`, and `.mjs` files are available. If you are using Typescript, you may want to import any of the types, available from the same place.
 
 ```ts
-import T from "t";
-import T, { Formatter } from "t"; // example with typescript
+import T from "translationary";
+import T, { Formatter } from "translationary"; // example with typescript
 ```
 
 To initialize the parser, you must create a new instance with the following properties:
