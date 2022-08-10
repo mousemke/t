@@ -1,4 +1,4 @@
-import T from "./t";
+import Translationary from "./t";
 
-export default T;
+export default Translationary;
 export * from "./t.types";

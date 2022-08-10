@@ -1,4 +1,4 @@
-import T, { Translator } from ".";
+import Translationary, { Translator } from ".";
 import exampleTranslations from "./example-app.en.json";
 
 let t: Translator;
@@ -18,7 +18,7 @@ const exampleProps = {
 
 describe("t", () => {
   beforeAll((done) => {
-    t = new T({
+    t = new Translationary({
       ...exampleProps,
       onLanguageChange: () => done()
     });
@@ -28,7 +28,7 @@ describe("t", () => {
 
   describe("t", () => {
     it("should not crash if used before translations are retrieved", () => {
-      const emptyT = new T({
+      const emptyT = new Translationary({
         ...exampleProps,
         fetchTranslations: () => ({})
       });
@@ -183,7 +183,7 @@ describe("t", () => {
     it("should change the internal language and retrieve new translations", (done) => {
       const fetchTranslationsSpy = jest.fn();
 
-      const changingT = new T({
+      const changingT = new Translationary({
         ...exampleProps,
         fetchTranslations: fetchTranslationsSpy
       });

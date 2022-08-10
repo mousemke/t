@@ -72,7 +72,7 @@ const translations = {
 
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
-const t = new T({
+const t = new Translationary({
   appName: "test",
   fetchTranslations: ({ lang }) => translations[lang],
   lang: "en",

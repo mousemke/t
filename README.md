@@ -23,14 +23,14 @@ npm install translationary
 To add it to your project, first import the default T. `.js`, `.cjs`, and `.mjs` files are available. If you are using Typescript, you may want to import any of the types, available from the same place.
 
 ```ts
-import T from "translationary";
-import T, { Formatter } from "translationary"; // example with typescript
+import Translationary from "translationary";
+import Translationary, { Formatter } from "translationary"; // example with typescript
 ```
 
 To initialize the parser, you must create a new instance with the following properties:
 
 ```ts
-new T({
+new Translationary({
   /**
    * The name of the app. This is used internally as well as passed to the fetchTranslations function for context.
    */
@@ -100,7 +100,7 @@ t("HOME", {color: "blue"});
 Variables can also use formatting. It is set as a second parameter to the variable, then both strings are sent into the formatter supplied in the initialization. Formatting options are only limited by your imagination - as long as your imagination only uses strings.
 
 ```ts
-const t = new T({
+const t = new Translationary({
   appName,
   fetchTranslations,
   lang,

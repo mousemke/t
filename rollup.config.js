@@ -1,8 +1,8 @@
 import pkg from "./package.json";
+import tsOptions from "./tsconfig.json";
 
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
-import tsOptions from "./tsconfig.json";
 
 const external = ["typescript", "rollup"];
 
@@ -12,7 +12,12 @@ const config = [
     output: [
       { file: pkg.exports.import, format: "es" },
       { file: pkg.exports.require, format: "commonjs", exports: "named" },
-      { file: pkg.exports.basic, format: "commonjs", exports: "named" }
+      { file: pkg.exports.basic, format: "commonjs", exports: "named" },
+      {
+        file: pkg.exports.iife,
+        format: "iife",
+        name: "Translationary"
+      }
     ],
     plugins: [typescript(tsOptions.compilerOptions)],
     external

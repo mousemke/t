@@ -1,12 +1,13 @@
 {
   "name": "translationary",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A utility to parse strings and retrieve translations",
   "main": "./dist/t.cjs",
   "exports": {
     "basic": "./dist/t.js",
     "import": "./dist/t.mjs",
-    "require": "./dist/t.cjs"
+    "require": "./dist/t.cjs",
+    "iife": "./dist/t.iife.js"
   },
   "types": "dist/t.d.ts",
   "sideEffects": false,

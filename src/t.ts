@@ -15,7 +15,9 @@ import type {
 const variableRegex = /(?:{{(.+?)}})/g;
 const recursiveRegex = /(?:\$t\((.+?)\))/g;
 
-const T = function T(props: TranslationContructorProps): Translator {
+const Translationary = function Translationary(
+  props: TranslationContructorProps
+): Translator {
   const { appName, lang, onLanguageChange, formatter, fetchTranslations } =
     props;
 
@@ -200,4 +202,4 @@ const T = function T(props: TranslationContructorProps): Translator {
   } as Translate);
 } as TranslationConstructor<Translator>;
 
-export default T;
+export default Translationary;
